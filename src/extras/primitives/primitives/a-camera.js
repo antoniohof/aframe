@@ -5,7 +5,7 @@ registerPrimitive('a-camera', {
     'camera': {},
     'look-controls': {},
     'wasd-controls': {},
-    'position': {y: 1.6}
+    'position': {y: 0}
   },
 
   mappings: {
