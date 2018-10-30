@@ -169,7 +169,8 @@ module.exports.Component = registerComponent('raycaster', {
     els = data.objects
       ? this.el.sceneEl.querySelectorAll(data.objects)
       : this.el.sceneEl.children;
-    this.objects = this.flattenObject3DMaps(els);
+    // Superviz
+    this.objects = this.supervizFilterObjects(els);
     this.dirty = false;
   },
 
@@ -215,7 +216,9 @@ module.exports.Component = registerComponent('raycaster', {
     // Raycast.
     this.updateOriginDirection();
     rawIntersections.length = 0;
-    this.raycaster.intersectObjects(this.objects, data.recursive, rawIntersections);
+
+    // this.raycaster.intersectObjects(this.objects, data.recursive, rawIntersections);
+    this.raycaster.intersectObject(this.el.sceneEl.object3D, data.recursive, rawIntersections);
 
     // Only keep intersections against objects that have a reference to an entity.
     intersections.length = 0;
@@ -384,6 +387,31 @@ module.exports.Component = registerComponent('raycaster', {
    * @param  {Array<Element>} els
    * @return {Array<THREE.Object3D>}
    */
+  supervizFilterObjects: function (els) {
+    var i;
+    var objects = this.objects;
+    // Push meshes and other attachments onto list of objects to intersect.
+    objects.length = 0;
+    for (i = 0; i < els.length; i++) {
+      if (els[i].object3D) {
+        var clas = els[i].className;
+        var id = els[i].id;
+        if (clas !== 'avatar' &&
+            clas !== 'pointer' &&
+            clas !== 'drawsphere' &&
+            id !== 'lobbyfloor' &&
+            id !== 'lobbyWorld' &&
+            id !== 'lobbyParticles' &&
+            id !== 'raygaze' &&
+            id !== 'worldsbackgroundvr' &&
+            id !== 'backplaymenu') {
+          objects.push(els[i].object3D);
+        }
+      }
+    }
+    return objects;
+  },
+
   flattenObject3DMaps: function (els) {
     var key;
     var i;
@@ -398,7 +426,6 @@ module.exports.Component = registerComponent('raycaster', {
         }
       }
     }
-
     return objects;
   },
 
