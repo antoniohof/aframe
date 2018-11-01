@@ -68375,7 +68375,7 @@ module.exports.Component = registerComponent('oculus-touch-controls', {
     buttonTouchColor: {type: 'color', default: '#8AB'},
     buttonHighlightColor: {type: 'color', default: '#2DF'},  // Light blue.
     model: {default: true},
-    orientationOffset: {type: 'vec3', default: {x: 43, y: 0, z: 0}}
+    orientationOffset: {type: 'vec3', default: {x: 0, y: 0, z: 0}} // hack superviz new
   },
 
   /**
@@ -68660,8 +68660,6 @@ module.exports.Component = registerComponent('raycaster', {
     this.intersectedClearedDetail = {el: this.el};
     this.intersectionClearedDetail = {clearedEls: this.clearedIntersectedEls};
     this.intersectionDetail = {};
-
-    console.log('init');
   },
 
   /**
@@ -68751,7 +68749,7 @@ module.exports.Component = registerComponent('raycaster', {
     els = data.objects
       ? this.el.sceneEl.querySelectorAll(data.objects)
       : this.el.sceneEl.children;
-    //this.objects = this.flattenObject3DMaps(els);
+    // Superviz
     this.objects = this.supervizFilterObjects(els);
     this.dirty = false;
   },
@@ -68800,7 +68798,7 @@ module.exports.Component = registerComponent('raycaster', {
     rawIntersections.length = 0;
 
     // this.raycaster.intersectObjects(this.objects, data.recursive, rawIntersections);
-    this.raycaster.intersectObject( this.el.sceneEl.object3D, data.recursive, rawIntersections);
+    this.raycaster.intersectObject(this.el.sceneEl.object3D, data.recursive, rawIntersections);
 
     // Only keep intersections against objects that have a reference to an entity.
     intersections.length = 0;
@@ -68970,13 +68968,12 @@ module.exports.Component = registerComponent('raycaster', {
    * @return {Array<THREE.Object3D>}
    */
   supervizFilterObjects: function (els) {
-    var key;
     var i;
     var objects = this.objects;
     // Push meshes and other attachments onto list of objects to intersect.
     objects.length = 0;
     for (i = 0; i < els.length; i++) {
-      if (els[i].object3D){ 
+      if (els[i].object3D) {
         var clas = els[i].className;
         var id = els[i].id;
         if (clas !== 'avatar' &&
@@ -77278,7 +77275,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.8.2 (Date 2018-10-29, Commit #78f5f89d)');
+console.log('A-Frame Version: 0.8.2 (Date 2018-11-01, Commit #51381241)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
