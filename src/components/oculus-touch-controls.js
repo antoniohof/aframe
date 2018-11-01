@@ -31,7 +31,7 @@ module.exports.Component = registerComponent('oculus-touch-controls', {
     buttonTouchColor: {type: 'color', default: '#8AB'},
     buttonHighlightColor: {type: 'color', default: '#2DF'},  // Light blue.
     model: {default: true},
-    orientationOffset: {type: 'vec3', default: {x: 43, y: 0, z: 0}}
+    orientationOffset: {type: 'vec3', default: {x: 0, y: 0, z: 0}} // hack superviz new
   },
 
   /**
